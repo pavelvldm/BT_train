@@ -10,6 +10,7 @@ struct Link
 {
 	Link* Left;
 	Link* Right;
+	Link* Parent;
 	Data* Inner;
 };
 
@@ -25,7 +26,9 @@ public:
 
 	Data* Find(int k, Link* fRoot);
 	void Insert(int k, Link* fRoot);
-	void Delete(int k, Link* fRoot);
+	void Delete(int k);
+
+	Link* MinLink(Link* fR);
 
 	void DeleteTree(Link* fRoot);
 	void PrintTree(Link* fRoot);

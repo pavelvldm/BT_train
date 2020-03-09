@@ -1,2 +1,5 @@
-﻿  tests.cpp
+﻿  BT_Meth.cpp
+  tests.cpp
+  Создание кода...
+c:\users\petro\desktop\proj\structuresofdata\structuresofdata\bt_meth.cpp(35): warning C4715: BinaryTree::Find: значение возвращается не при всех путях выполнения
   StructuresOfData.vcxproj -> C:\Users\petro\Desktop\proj\StructuresOfData\Debug\StructuresOfData.exe

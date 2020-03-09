@@ -21,5 +21,11 @@ int main()
 	testTree.PrintTree(testTree.GetRoot());
 	std::cout << "\n";
 
+	testTree.Delete(6);
+
+	std::cout << "\n Tree: \n";
+	testTree.PrintTree(testTree.GetRoot());
+	std::cout << "\n";
+
 	return 0;
 }

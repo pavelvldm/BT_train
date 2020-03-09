@@ -34,9 +34,135 @@ Data* BinaryTree::Find(int k, Link* fRoot)
 	if (p->Inner->key < k) return Find(k, p->Right);
 }
 
-void BinaryTree::Delete(int k, Link* fRoot)
+Link* BinaryTree::MinLink(Link* fR)
 {
-	return;
+	if (fR == nullptr) return fR;
+
+	Link* p = fR;
+	while (p->Left != nullptr)
+		p = p->Left;
+
+	return p;
+}
+
+void BinaryTree::Delete(int k)
+{
+	if (Root == nullptr) throw;
+	
+	Link* p = Root;
+	Link* pp = Root;
+	
+	while (p->Inner->key != k)
+	{
+		if (p->Inner->key > k)
+			if (p->Left != nullptr)
+			{
+				pp = p;
+				p = p->Left;
+			}
+			else
+				throw;
+
+		if (p->Inner->key < k)
+			if (p->Right != nullptr)
+			{
+				pp = p;
+				p = p->Right;
+			}
+			else
+				throw;
+	}
+
+	// нет дочерних звеньев
+	if ((p->Left == nullptr) && (p->Right == nullptr))
+	{
+		if (pp->Left == p)
+		{
+			pp->Left = nullptr;
+			delete p;
+
+			return;
+		}
+		else
+		{
+			pp->Right = nullptr;
+			delete p;
+
+			return;
+		}
+	}
+
+	// есть одно дочернее звено
+	if ((p->Left == nullptr) && (p->Right != nullptr))
+	{
+		if (pp->Left == p)
+		{
+			pp->Left = p->Right;
+			p->Right->Parent = pp;
+			delete p;
+
+			return;
+		}
+		else
+		{
+			pp->Right = p->Right;
+			p->Right->Parent = pp;
+			delete p;
+
+			return;
+		}
+	}
+
+	// есть одно дочернее звено
+	if ((p->Left != nullptr) && (p->Right == nullptr))
+	{
+		if (pp->Left == p)
+		{
+			pp->Left = p->Left;
+			p->Left->Parent = pp;
+			delete p;
+
+			return;
+		}
+		else
+		{
+			pp->Right = p->Left;
+			p->Left->Parent = pp;
+			delete p;
+
+			return;
+		}
+	}
+
+	// есть два дочерних звена
+	if ((p->Left != nullptr) && (p->Right != nullptr))
+	{
+		if (pp->Left == p)
+		{
+			Link* pr = MinLink(p->Right);
+			pp->Left = pr;
+			pr->Left = p->Left;
+			pr->Right = p->Right;
+			pr->Parent->Left = nullptr;
+			pr->Parent = pp;
+			delete p;
+
+			return;
+		}
+		else
+		{
+			Link* pr = MinLink(p->Right);
+			pp->Right = pr;
+			pr->Left = p->Left;
+			pr->Right = p->Right;
+			pr->Parent->Left = nullptr;
+			pr->Parent = pp;
+			delete p;
+
+			return;
+		}
+	}
+
 }
 
 void BinaryTree::Insert(int k, Link* fRoot)
@@ -53,6 +179,7 @@ void BinaryTree::Insert(int k, Link* fRoot)
 			pp->Left->Inner->key = k;
 			pp->Left->Left = nullptr;
 			pp->Left->Right = nullptr;
+			pp->Left->Parent = pp;
 
 			return;
 		}
@@ -67,6 +194,7 @@ void BinaryTree::Insert(int k, Link* fRoot)
 			pp->Right->Inner->key = k;
 			pp->Right->Left = nullptr;
 			pp->Right->Right = nullptr;
+			pp->Right->Parent = pp;
 
 			return;
 		}
